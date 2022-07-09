@@ -14,7 +14,7 @@ on:
         default: ./src/*.sln
       test-results:
         type: string
-        default: ./test-results
+        default: test-results
     secrets:
       SONAR_TOKEN:
         required: true
@@ -47,7 +47,7 @@ jobs:
         run: dotnet build ${{ inputs.solution }} --no-restore
         
       - name: Test
-        run: dotnet test ${{ inputs.solution }} --no-restore --collect "XPlat Code Coverage" --logger:"trx" --results-directory ${{ inputs.test-results }} --blame
+        run: dotnet test ${{ inputs.solution }} --no-restore --collect "XPlat Code Coverage" --logger:"trx" --results-directory ./${{ inputs.test-results }} --blame
         
       - name: Perform Code Analysis        
         uses: sonarsource/sonarcloud-github-action@master
