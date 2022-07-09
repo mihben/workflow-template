@@ -15,6 +15,9 @@ on:
       test-results:
         type: string
         default: ./test-results
+      name:
+        type: string
+        required: true
     
 jobs:
   build:
@@ -46,3 +49,4 @@ jobs:
           path: ${{ inputs.test-results }}/*.trx
           reporter: dotnet-trx
           fail-on-error: true
+          name: ${{ inputs.name }}
