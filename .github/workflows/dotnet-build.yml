@@ -75,4 +75,4 @@ jobs:
         run: dotnet test ${{ inputs.solution }} --no-restore --collect "XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover --logger:"trx" --results-directory ./${{ inputs.test-results }} --blame
         
       - name: Perform Code Analysis        
-        run: .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}
+        run: .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
