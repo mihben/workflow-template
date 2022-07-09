@@ -9,6 +9,9 @@ on:
       dotnet-version:
         type: string
         default: 6.0.x
+      solution:
+        type: string
+        default: ./src/*.sln
     
 jobs:
   build:
@@ -25,9 +28,9 @@ jobs:
           dotnet-version: ${{ inputs.dotnet-version }}
           
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore ${{ inputs.solution }}
         
       - name: Build
-        run: dotnet build --no-restore
+        run: dotnet build ${{ inputs.solution }} --no-restore
         
        
