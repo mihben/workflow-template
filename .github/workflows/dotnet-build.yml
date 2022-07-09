@@ -59,6 +59,6 @@ jobs:
             -Dsonar.organization=mihben
             -Dsonar.projectKey=mihben_S-Train
             -Dsonar.projectName=S-Train
-            -Dsonar.tests=${{ inputs.test-results }}/*.trx
+            -Dsonar.tests=/${{ inputs.test-results }}/*.trx
             -Dsonar.sources=src/          
-            -Dsonar.sonar.cs.opencover.reportsPaths=${{ inputs.test-results }}/**/*.xml
+            -Dsonar.sonar.cs.opencover.reportsPaths=/${{ inputs.test-results }}/**/*.xml
