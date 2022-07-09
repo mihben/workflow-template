@@ -47,9 +47,9 @@ jobs:
             -Dsonar.organization=mihben
             -Dsonar.projectKey=mihben_S-Train
             -Dsonar.projectName=S-Train
-            -Dsonar.tests=${{ input.test-results }}/*.trx
+            -Dsonar.tests=${{ inputs.test-results }}/*.trx
             -Dsonar.sources=src/          
-            -Dsonar.sonar.cs.opencover.reportsPaths=${{ input.test-results }}/**/*.xml
+            -Dsonar.sonar.cs.opencover.reportsPaths=${{ inputs.test-results }}/**/*.xml
       
       - name: Restore dependencies
         run: dotnet restore ${{ inputs.solution }}
@@ -59,7 +59,3 @@ jobs:
         
       - name: Test
         run: dotnet test ${{ inputs.solution }} --no-restore --collect "XPlat Code Coverage" --logger:"trx" --results-directory ${{ inputs.test-results }} --blame
-        
-      - name: Perform Code Analysis
-        run: .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
-        
