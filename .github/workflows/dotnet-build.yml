@@ -32,14 +32,6 @@ jobs:
         uses: actions/setup-dotnet@v2
         with:
           dotnet-version: ${{ inputs.dotnet-version }}
-          
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v2
-        with:
-          languages: csharp
-          
-      - name: Restore dependencies
-        run: dotnet restore ${{ inputs.solution }}
         
       - name: Lint
         uses: github/super-linter@v4
@@ -47,6 +39,14 @@ jobs:
           VALIDATE_ALL_CODEBASE: false
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BRANCH: feature/ci-pipeline
+          
+      # - name: Initialize CodeQL
+        # uses: github/codeql-action/init@v2
+        # with:
+          # languages: csharp
+          
+      - name: Restore dependencies
+        run: dotnet restore ${{ inputs.solution }}
         
       - name: Build
         run: dotnet build ${{ inputs.solution }} --no-restore
@@ -54,15 +54,15 @@ jobs:
       - name: Test
         run: dotnet test ${{ inputs.solution }} --no-restore --collect "XPlat Code Coverage" --logger:"trx" --results-directory ./test-results --blame
         
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v2
+      # - name: Perform CodeQL Analysis
+        # uses: github/codeql-action/analyze@v2
       
-      - name: Publish Test Results
-        uses: phoenix-actions/test-reporting@v8
-        if: always()
-        with:
-          path: ${{ inputs.test-results }}/*.trx
-          reporter: dotnet-trx
-          fail-on-error: true
-          name: ${{ inputs.name }}
+      # - name: Publish Test Results
+        # uses: phoenix-actions/test-reporting@v8
+        # if: always()
+        # with:
+          # path: ${{ inputs.test-results }}/*.trx
+          # reporter: dotnet-trx
+          # fail-on-error: true
+          # name: ${{ inputs.name }}
         
