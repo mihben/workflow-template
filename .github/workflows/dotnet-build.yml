@@ -39,6 +39,7 @@ jobs:
           VALIDATE_ALL_CODEBASE: true
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BRANCH: feature/ci-pipeline
+          FILTER_REGEX_EXCLUDE: .*github/**/*.*
           
       # - name: Initialize CodeQL
         # uses: github/codeql-action/init@v2
