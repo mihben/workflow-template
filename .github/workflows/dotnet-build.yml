@@ -11,7 +11,7 @@ on:
         default: 6.0.x
       solution:
         type: string
-        default: ./src/*.sln
+        default: src/*.sln
       test-results:
         type: string
         default: test-results
