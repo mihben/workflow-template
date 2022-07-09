@@ -40,7 +40,9 @@ jobs:
         run: dotnet test ${{ inputs.solution }} --no-restore --collect "XPlat Code Coverage" --logger:"trx" --results-directory ./test-results --blame
         
       - name: Publish Test Results
-        uses: EnricoMi/publish-unit-test-result-action@v1
+        uses: phoenix-actions/test-reporting@v8
         if: always()
         with:
-          files: ${{ inputs.test-results }}/*.trx
+          path: ${{ inputs.test-results }}/*.trx
+          reporter: dotnet-trx
+          fail-on-error: true
