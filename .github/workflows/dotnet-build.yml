@@ -63,7 +63,7 @@ jobs:
           dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
       
       - name: Begin Analysis
-        run: .\.sonar\scanner\dotnet-sonarscanner begin /o:"mihben" /k="mihben_S-Train" /n="S-Traing" /d:sonar.dotnet.excludeTestProjects=true /d:sonar.tests=${{ inputs.test-results }} /d:sonar.test.inclusions=*.trx /d:sonar.sources=src/ /d:sonar.sonar.cs.opencover.reportsPaths=${{ inputs.test-results }}/**/*.xml /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
+        run: .\.sonar\scanner\dotnet-sonarscanner begin /k="mihben_S-Train" /o:"mihben" /n="S-Train" /d:sonar.dotnet.excludeTestProjects=true /d:sonar.tests=${{ inputs.test-results }} /d:sonar.test.inclusions=*.trx /d:sonar.sources=src/ /d:sonar.sonar.cs.opencover.reportsPaths=${{ inputs.test-results }}/**/*.xml /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
       
       - name: Restore dependencies
         run: dotnet restore ${{ inputs.solution }}
