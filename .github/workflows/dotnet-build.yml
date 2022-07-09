@@ -55,10 +55,22 @@ jobs:
           dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
           
       - name: Checkout
-        uses: actions/checkout@v3      
+        uses: actions/checkout@v3  
+        with:
+          fetch-dept: 0
         
-      - name: Initialize SonarCloud scanner
-        run: .\.sonar\scanner\dotnet-sonarscanner begin /k:"mihben_S-Train" /o:"mihben" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
+      - name: SonarCloud Scan        
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        args: >
+          -Dsonar.organization=mihben
+          -Dsonar.projectKey=mihben_S-Train
+          -Dsonar.projectName=S-Train
+          -Dsonar.tests=${{ input.test-results }}/*.trx
+          -Dsonar.sources=src/          
+          -Dsonar.sonar.cs.opencover.reportsPaths=${{ input.test-results }}/**/*.xml
       
       - name: Restore dependencies
         run: dotnet restore ${{ inputs.solution }}
