@@ -21,33 +21,45 @@ jobs:
     name: Build
     runs-on: ${{ inputs.runs-on }}
     
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        
+    steps:        
       - name: Setup .NET ${{ inputs.dotnet-version }}
         uses: actions/setup-dotnet@v2
         with:
-          dotnet-version: ${{ inputs.dotnet-version }}          
+          dotnet-version: ${{ inputs.dotnet-version }}           
       
-      - name: Setup Testspace
-        uses: testspace-com/setup-testspace@v1
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
         with:
-          domain: ${{github.repository_owner}}
+          java-version: 1.11
+          
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v1
+        with:
+          path: ~\sonar\cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+          
+      - name: Cache SonarCloud scanner
+        id: cache-sonar-scanner
+        uses: actions/cache@v1
+        with:
+          path: .\.sonar\scanner
+          key: ${{ runner.os }}-sonar-scanner
+          restore-keys: ${{ runner.os }}-sonar-scanner
+          
+      - name: Install SonarCloud scanner
+        if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
+        shell: powershell
+        run: |
+          New-Item -Path .\.sonar\scanner -ItemType Directory
+          dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
+          
+      - name: Checkout
+        uses: actions/checkout@v3      
         
-      - name: Lint
-        uses: github/super-linter@v4
-        env:
-          VALIDATE_ALL_CODEBASE: false
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DEFAULT_BRANCH: develop
-          FILTER_REGEX_EXCLUDE: .*github/**/*.*
-          
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v2
-        with:
-          languages: csharp
-          
+      - name: Initialize SonarCloud scanner
+        run: .\.sonar\scanner\dotnet-sonarscanner begin /k:"mihben_S-Train" /o:"mihben" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
+      
       - name: Restore dependencies
         run: dotnet restore ${{ inputs.solution }}
         
@@ -57,9 +69,6 @@ jobs:
       - name: Test
         run: dotnet test ${{ inputs.solution }} --no-restore --collect "XPlat Code Coverage" --logger:"trx" --results-directory ${{ inputs.test-results }} --blame
         
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v2
-      
-      - name: Publish Test Results
-        run: testspace ${{ inputs.test-results }}/*.trx
+      - name: Perform Code Analysis
+        run: .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
         
