@@ -42,13 +42,14 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        args: >
-          -Dsonar.organization=mihben
-          -Dsonar.projectKey=mihben_S-Train
-          -Dsonar.projectName=S-Train
-          -Dsonar.tests=${{ input.test-results }}/*.trx
-          -Dsonar.sources=src/          
-          -Dsonar.sonar.cs.opencover.reportsPaths=${{ input.test-results }}/**/*.xml
+        with:
+          args: >
+            -Dsonar.organization=mihben
+            -Dsonar.projectKey=mihben_S-Train
+            -Dsonar.projectName=S-Train
+            -Dsonar.tests=${{ input.test-results }}/*.trx
+            -Dsonar.sources=src/          
+            -Dsonar.sonar.cs.opencover.reportsPaths=${{ input.test-results }}/**/*.xml
       
       - name: Restore dependencies
         run: dotnet restore ${{ inputs.solution }}
