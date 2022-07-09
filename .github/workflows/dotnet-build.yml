@@ -36,9 +36,9 @@ jobs:
       - name: Lint
         uses: github/super-linter@v4
         env:
-          VALIDATE_ALL_CODEBASE: true
+          VALIDATE_ALL_CODEBASE: false
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DEFAULT_BRANCH: feature/ci-pipeline
+          DEFAULT_BRANCH: develop
           FILTER_REGEX_EXCLUDE: .*github/**/*.*
           
       # - name: Initialize CodeQL
