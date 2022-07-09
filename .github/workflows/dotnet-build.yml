@@ -28,7 +28,12 @@ jobs:
       - name: Setup .NET ${{ inputs.dotnet-version }}
         uses: actions/setup-dotnet@v2
         with:
-          dotnet-version: ${{ inputs.dotnet-version }}
+          dotnet-version: ${{ inputs.dotnet-version }}          
+      
+      - name: Setup Testspace
+        uses: testspace-com/setup-testspace@v1
+        with:
+          domain: ${{github.repository_owner}}
         
       - name: Lint
         uses: github/super-linter@v4
@@ -56,10 +61,5 @@ jobs:
         uses: github/codeql-action/analyze@v2
       
       - name: Publish Test Results
-        uses: testhub-io/testhub-io.action@v0.61
-        id: hello
-        if: always()
-        with:        
-          test_result_pattern: ${{ inputs.test-results }}/**/*.trx"
-          test_coverage_pattern: ${{ inputs.test-results }}/**/*.xml
+        run: testspace ${{ inputs.test-results }}/*.trx
         
