@@ -56,7 +56,7 @@ jobs:
         uses: github/codeql-action/analyze@v2
       
       - name: Publish Test Results
-        uses: testhub-io/testhub-io.action@v0.57
+        uses: testhub-io/testhub-io.action@v0.61
         if: always()
         with:        
           test_result_pattern: ${{ inputs.test-results }}/**/*.trx"
