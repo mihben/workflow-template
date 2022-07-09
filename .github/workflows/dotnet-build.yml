@@ -41,10 +41,10 @@ jobs:
           DEFAULT_BRANCH: develop
           FILTER_REGEX_EXCLUDE: .*github/**/*.*
           
-      # - name: Initialize CodeQL
-        # uses: github/codeql-action/init@v2
-        # with:
-          # languages: csharp
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: csharp
           
       - name: Restore dependencies
         run: dotnet restore ${{ inputs.solution }}
@@ -55,8 +55,8 @@ jobs:
       - name: Test
         run: dotnet test ${{ inputs.solution }} --no-restore --collect "XPlat Code Coverage" --logger:"trx" --results-directory ./test-results --blame
         
-      # - name: Perform CodeQL Analysis
-        # uses: github/codeql-action/analyze@v2
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
       
       # - name: Publish Test Results
         # uses: phoenix-actions/test-reporting@v8
