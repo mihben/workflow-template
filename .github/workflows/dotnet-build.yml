@@ -41,6 +41,13 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore ${{ inputs.solution }}
         
+      - name: Lint
+        uses: github/super-linter@v4
+        env:
+          VALIDATE_ALL_CODEBASE: false
+          DEFAULT_BRANCH: feature/ci-pipeline
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
       - name: Build
         run: dotnet build ${{ inputs.solution }} --no-restore
         
