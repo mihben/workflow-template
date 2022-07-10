@@ -48,5 +48,5 @@ jobs:
       - name: Push
         uses: crazy-max/ghaction-github-pages@v3
         with:
-          build_dir: ${{ github.ref_name }}
-          target_branch: .
+          build_dir: .
+          target_branch: ${{ inputs.branch }}
