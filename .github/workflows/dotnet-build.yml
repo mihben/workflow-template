@@ -83,7 +83,7 @@ jobs:
       - name: Copy Artifacts
         shell: powershell
         run: |
-          New-Item Path "artifacts" -ItemType Directory
+          New-Item -Path "artifacts" -ItemType Directory
           Copy-Item -Path $(Get-ChildItem -Path *\bin\*\*.Test.*.dll -Recurse),$(Get-ChildItem -Path *\bin\*\TestExecution.json -Recurse) -Destination "artifacts" -Recurse
         
       - name: Upload Artifacts
