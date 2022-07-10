@@ -5,7 +5,7 @@ on:
     inputs:
       runs-on:
         type: string
-        default: ubuntu-latest
+        default: windows-latest
       branch:
         type: string
         required: true
@@ -46,7 +46,7 @@ jobs:
         run:  dotnet tool install --global SpecFlow.Plus.LivingDoc.CLI      
       
       - name: Prepare
-        run: livingdoc test-assembly *.Test.*.dll --project-language ${{ inputs.language }} --title "${{ inputs.title }}" --project-name "${{ inputs.project }}" --work-item-url-template "https://github.com/${{ inputs.organization }}/${{ inputs.project }}/issues/{id}" --work-item-prefix "${{ inputs.work-item-prefix }}" --test-execution-json TestExecution.json --output "livingdoc/${{ inputs.project }}.html"
+        run: livingdoc test-assembly *.Test.*.dll --project-language ${{ inputs.language }} --title "${{ inputs.title }}" --project-name "${{ inputs.project }}" --work-item-url-template "https://github.com/${{ inputs.organization }}/${{ inputs.project }}/issues/{id}" --work-item-prefix "${{ inputs.work-item-prefix }}" --test-execution-json TestExecution.json --output "livingdoc/${{ inputs.artifacts }}.html"
       
       - name: Push
         uses: crazy-max/ghaction-github-pages@v3
