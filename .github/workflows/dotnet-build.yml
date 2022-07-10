@@ -85,14 +85,14 @@ jobs:
         
       - name: Copy Artifacts
         shell: powershell
-        if: ${{ inputs.publish-livingdoc-artifacts }} == true
+        if: ${{ inputs.publish-livingdoc-artifacts == 'true' }}
         run: |
           New-Item -Path "artifacts" -ItemType Directory
           Copy-Item -Path $(Get-ChildItem -Path build\*.Test.*.dll -Recurse),$(Get-ChildItem -Path build\TestExecution.json -Recurse) -Destination "artifacts" -Recurse
         
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
-        if: ${{ inputs.publish-livingdoc-artifacts }} == true
+        if: ${{ inputs.publish-livingdoc-artifacts == 'true' }}
         with:
           path: artifacts/
           name: ${{ inputs.artifacts }}
