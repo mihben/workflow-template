@@ -29,6 +29,9 @@ on:
         type: string
         required: true
         default: issue-
+    secrets:
+      GITHUB_TOKEN:
+        required: true
       
     
 jobs:
