@@ -1,11 +1,11 @@
-name: Build
+name: Publish LivingDoc
 
 on:
   workflow_call:
     inputs:
       runs-on:
         type: string
-        default: windows-latest
+        default: ubuntu-latest
       branch:
         type: string
         required: true
