@@ -81,9 +81,8 @@ jobs:
         run: .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
         
       - name: Copy Artifacts
-        run: |
-          cp **/*.Test.*.dll artifacts/
-          cp **/TestExecution.json artifacts/
+        shell: powershell
+        run: Copy-Item -Path **/*.Test.*.dll,**/TestExecution.json -Destination artifacts/
         
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
