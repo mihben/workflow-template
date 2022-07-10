@@ -29,9 +29,6 @@ on:
         type: string
         required: true
         default: issue-
-    secrets:
-      GITHUB_TOKEN:
-        required: true
       
     
 jobs:
@@ -53,3 +50,5 @@ jobs:
         with:
           build_dir: .
           target_branch: ${{ inputs.branch }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
