@@ -18,6 +18,9 @@ on:
       artifacts:
         type: string
         required: true
+      publish-livingdoc-artifacts:
+        type: bool
+        required: true
     secrets:
       SONAR_TOKEN:
         required: true
@@ -82,12 +85,14 @@ jobs:
         
       - name: Copy Artifacts
         shell: powershell
+        if: ${{ input.publish-livingdoc-artifacts }} == true
         run: |
           New-Item -Path "artifacts" -ItemType Directory
           Copy-Item -Path $(Get-ChildItem -Path build\*.Test.*.dll -Recurse),$(Get-ChildItem -Path build\TestExecution.json -Recurse) -Destination "artifacts" -Recurse
         
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
+        if: ${{ input.publish-livingdoc-artifacts }} == true
         with:
           path: artifacts/
           name: ${{ inputs.artifacts }}
