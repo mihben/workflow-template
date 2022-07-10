@@ -15,6 +15,9 @@ on:
       test-results:
         type: string
         default: test-results
+      artifats:
+        type: string
+        required: true
     secrets:
       SONAR_TOKEN:
         required: true
@@ -76,3 +79,14 @@ jobs:
         
       - name: Perform Code Analysis        
         run: .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+        
+      - name: Copy Artifacts
+        run: |
+          cp **/*.Test.*.dll artifacts/
+          cp **/TestExecution.json artifacts/
+        
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          path: artifacts/
+          name: ${{ inputs.artifacts }}
