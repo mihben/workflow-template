@@ -36,25 +36,19 @@ jobs:
     name: Publish LivingDoc
     runs-on: ${{ inputs.runs-on }}
     
-    steps:        
-      - name: Checkout
-        uses: actions/checkout@v3  
-        working-directory: target
-        with:
-          ref: '${{ inputs.branch }}'
-        
+    steps:            
       - name: Download Artifacts
-        working-directory: artifacts
         uses: actions/download-artifact@v3
+        working-directory: artifacts
         with:
           name: ${{ inputs.artifacts }}
       
       - name: Prepare
-        working-directory: artifacts
         run: livingdoc test-assembly *.Test.*.dll --project-language ${{ inputs.language }} --title "${{ inputs.title }}" --project-name "${{ inputs.project }}" --work-item-url-template "https://github.com/${{ inputs.organization }}/${{ inputs.project }}/issues/{id}" --work-item-prefix "${{ inputs.work-item-prefix }}" --test-execution-json .\TestExecution.json --output "target/${{ inputs.project }}/${{ inputs.project }}.html"
+        working-directory: artifacts
       
       - name: Push
         uses: crazy-max/ghaction-github-pages@v3
         with:
-          build_dir: target
+          build_dir: artifacts
           target_branch: ${{ inputs.branch }}
