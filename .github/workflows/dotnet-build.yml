@@ -15,7 +15,7 @@ on:
       test-results:
         type: string
         default: test-results
-      artifats:
+      artifacts:
         type: string
         required: true
     secrets:
