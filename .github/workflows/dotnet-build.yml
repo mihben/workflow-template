@@ -72,10 +72,10 @@ jobs:
         run: dotnet restore ${{ inputs.solution }}
         
       - name: Build
-        run: dotnet build ${{ inputs.solution }} --no-restore
+        run: dotnet build ${{ inputs.solution }} --no-restore --output build/
         
       - name: Test
-        run: dotnet test src/ --logger "trx" --results-directory "${{ inputs.test-results }}" --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover --blame
+        run: dotnet test src/ --logger "trx" --output build/ --results-directory "${{ inputs.test-results }}" --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover --blame
         
       - name: Perform Code Analysis        
         run: .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
@@ -84,7 +84,7 @@ jobs:
         shell: powershell
         run: |
           New-Item -Path "artifacts" -ItemType Directory
-          Copy-Item -Path $(Get-ChildItem -Path *\bin\*\*.Test.*.dll -Recurse),$(Get-ChildItem -Path *\bin\*\TestExecution.json -Recurse) -Destination "artifacts" -Recurse
+          Copy-Item -Path $(Get-ChildItem -Path build\*.Test.*.dll -Recurse),$(Get-ChildItem -Path build\TestExecution.json -Recurse) -Destination "artifacts" -Recurse
         
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
