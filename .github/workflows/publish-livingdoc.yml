@@ -45,11 +45,11 @@ jobs:
         with:
           name: ${{ inputs.artifacts }}
       
-      - name: Prepare
-        run: livingdoc test-assembly *.Test.*.dll --project-language ${{ inputs.language }} --title "${{ inputs.title }}" --project-name "${{ inputs.project }}" --work-item-url-template "https://github.com/${{ inputs.organization }}/${{ inputs.project }}/issues/{id}" --work-item-prefix "${{ inputs.work-item-prefix }}" --test-execution-json .\TestExecution.json --output "livingdoc/${{ inputs.project }}.html"
+      # - name: Prepare
+        # run: livingdoc test-assembly *.Test.*.dll --project-language ${{ inputs.language }} --title "${{ inputs.title }}" --project-name "${{ inputs.project }}" --work-item-url-template "https://github.com/${{ inputs.organization }}/${{ inputs.project }}/issues/{id}" --work-item-prefix "${{ inputs.work-item-prefix }}" --test-execution-json TestExecution.json --output "livingdoc/${{ inputs.project }}.html"
       
-      # - name: Push
-        # uses: crazy-max/ghaction-github-pages@v3
-        # with:
-          # build_dir: artifacts
-          # target_branch: ${{ inputs.branch }}
+      - name: Push
+        uses: crazy-max/ghaction-github-pages@v3
+        with:
+          build_dir: ${{ github.ref_name }}
+          target_branch: ${{ inputs.branch }}
