@@ -36,10 +36,7 @@ jobs:
     name: Publish LivingDoc
     runs-on: ${{ inputs.runs-on }}
     
-    steps:            
-      - name: Install LivigDoc cli
-        run:  dotnet tool install --global SpecFlow.Plus.LivingDoc.CLI
-    
+    steps:         
       - name: Download Artifacts
         uses: actions/download-artifact@v3
         with:
