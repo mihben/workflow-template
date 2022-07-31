@@ -14,7 +14,10 @@ on:
         default: src/
       test-results:
         type: string
-        default: test-results
+        required: true
+      test-runsettings:
+        type: string
+        default: environment/test.runsettings
       artifacts:
         type: string
         required: true
@@ -78,7 +81,7 @@ jobs:
         run: dotnet build ${{ inputs.solution }} --no-restore --output build/
         
       - name: Test
-        run: dotnet test src/ --logger "trx" --output build/ --results-directory "${{ inputs.test-results }}" --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover --blame
+        run: dotnet test src/ --logger "trx" --output build/ --results-directory "${{ inputs.test-results }}" --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover --blame --settings "${{ inputs.test-runsettings }}"
         
       - name: Perform Code Analysis        
         run: .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
