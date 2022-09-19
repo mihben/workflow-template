@@ -87,6 +87,12 @@ jobs:
       - name: Perform Code Analysis        
         run: .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
         
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v2.0.0
+        with:
+          trx_files: "${{ inputs.test-results }}/**/*.trx"
+          fail_on: "test_failures"
+        
       - name: Copy Artifacts
         shell: powershell
         if: ${{ inputs.publish-livingdoc-artifacts == true }}
