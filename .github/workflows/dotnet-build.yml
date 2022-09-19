@@ -91,7 +91,7 @@ jobs:
         uses: EnricoMi/publish-unit-test-result-action/composite@v2
         with:
           trx_files: "${{ inputs.test-results }}/**/*.trx"
-          fail_on: "test_failures"
+          fail_on: "test failures"
         
       - name: Copy Artifacts
         shell: powershell
