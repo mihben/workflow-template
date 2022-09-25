@@ -14,8 +14,8 @@ on:
         default: src/
     
 jobs:
-  build:
-    name: Build
+  publish:
+    name: Publish
     runs-on: ${{ inputs.runs-on }}
     
     steps:        
@@ -36,7 +36,7 @@ jobs:
         run: dotnet restore ${{ inputs.solution }}
         
       - name: Pack
-        run: dotnet pack --configuration Release /p:Version=${VERSION} --include-source --include-symbols --output artifacts/packages
+        run: dotnet pack ${{ inputs.solution }} --configuration Release /p:Version=${VERSION} --include-source --include-symbols --output artifacts/packages
         
       - name: Push
         run: dotnet nuget push "artifacts/packages/*" --api-key ${secrets.NUGET_API_KEY}
