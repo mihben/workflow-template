@@ -12,6 +12,9 @@ on:
       solution:
         type: string
         default: src/
+    secrets:
+      NUGET_API_KEY:
+        required: true
     
 jobs:
   publish:
