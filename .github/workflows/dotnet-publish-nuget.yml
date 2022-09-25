@@ -30,7 +30,7 @@ jobs:
           fetch-depth: 0
           
       - name: Determine version
-        run: echo "VERSION=git describe --tags" >> $GITHUB_ENV
+        run: VERSION=git describe --tags >> $GITHUB_ENV
           
       - name: Restore dependencies
         run: dotnet restore ${{ inputs.solution }}
