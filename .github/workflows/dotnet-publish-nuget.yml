@@ -1,0 +1,42 @@
+name: Publish Nuget
+
+on:
+  workflow_call:
+    inputs:
+      runs-on:
+        type: string
+        default: ubuntu-latest
+      dotnet-version:
+        type: string
+        default: 6.0.x
+      solution:
+        type: string
+        default: src/
+    
+jobs:
+  build:
+    name: Build
+    runs-on: ${{ inputs.runs-on }}
+    
+    steps:        
+      - name: Setup .NET ${{ inputs.dotnet-version }}
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: ${{ inputs.dotnet-version }}     
+          
+      - name: Checkout
+        uses: actions/checkout@v3  
+        with:
+          fetch-depth: 0
+          
+      - name: Determine version
+        run: echo "VERSION=git describe --tags" >> $GITHUB_ENV
+          
+      - name: Restore dependencies
+        run: dotnet restore ${{ inputs.solution }}
+        
+      - name: Pack
+        run: dotnet pack --configuration Release /p:Version=${VERSION} --include-source --include-symbols --output artifacts/packages
+        
+      - name: Push
+        run: dotnet nuget push "artifacts/packages/*" --api-key ${secrets.NUGET_API_KEY}
