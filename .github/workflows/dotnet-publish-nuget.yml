@@ -39,4 +39,4 @@ jobs:
         run: dotnet pack ${{ inputs.solution }} --configuration Release /p:Version=${VERSION} --include-source --include-symbols --output artifacts/packages
         
       - name: Push
-        run: dotnet nuget push "artifacts/packages/*" --api-key ${secrets.NUGET_API_KEY}
+        run: dotnet nuget push "artifacts/packages/*" --api-key "${{ secrets.NUGET_API_KEY }}"
