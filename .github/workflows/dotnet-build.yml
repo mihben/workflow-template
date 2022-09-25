@@ -82,9 +82,16 @@ jobs:
         
       - name: Test
         run: dotnet test src/ --logger "trx" --output build/ --results-directory "${{ inputs.test-results }}" --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover --blame --settings "${{ inputs.test-runsettings }}"
+        continue-on-error: true
         
       - name: Perform Code Analysis        
         run: .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+        
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action/composite@v2
+        with:
+          trx_files: "${{ inputs.test-results }}/**/*.trx"
+          fail_on: "test failures"
         
       - name: Copy Artifacts
         shell: powershell
