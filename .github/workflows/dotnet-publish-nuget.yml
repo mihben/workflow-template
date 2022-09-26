@@ -41,7 +41,7 @@ jobs:
         run: dotnet restore ${{ inputs.solution }}
         
       - name: Pack
-        run: dotnet pack ${{ inputs.solution }} --configuration Release /p:Version=${VERSION} --include-source --include-symbols --output artifacts/packages
+        run: dotnet pack ${{ inputs.solution }} --configuration Release /p:Version=${VERSION} --output artifacts/packages
         
       - name: Push
         run: dotnet nuget push "artifacts/packages/*.nupkg" --api-key "${{ secrets.NUGET_API_KEY }}" --source ${{ inputs.source }}
